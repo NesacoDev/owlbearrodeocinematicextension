@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Overlay OWLbear</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #111827;
+            --accent: #38bdf8;
+            --muted: #94a3b8;
+            --text: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 18px;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            background: radial-gradient(circle at 20% 20%, #1e293b 0%, #0b1221 45%),
+                                    radial-gradient(circle at 80% 0%, #0ea5e9 0%, transparent 25%),
+                                    linear-gradient(160deg, #0f172a 0%, #0b1020 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .shell {
+            max-width: 760px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #111827, #0d1425);
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 22px;
+            letter-spacing: 0.2px;
+        }
+
+        p.subtitle {
+            margin: 0 0 20px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .panel {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            border: 1px dashed #334155;
+            border-radius: 10px;
+            padding: 14px;
+            background: rgba(255,255,255,0.02);
+            color: var(--text);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-weight: 700;
+            color: #0b1221;
+            background: linear-gradient(135deg, #38bdf8, #22d3ee);
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            box-shadow: 0 12px 30px rgba(34, 211, 238, 0.28);
+        }
+
+        button.secondary {
+            background: #1f2937;
+            color: var(--text);
+            box-shadow: none;
+        }
+
+        button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        button:hover:not(:disabled) { transform: translateY(-1px); }
+        button:active:not(:disabled) { transform: translateY(0); }
+
+        .status {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .note {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: #000 !important;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2147483647 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+        }
+
+        .overlay video {
+            max-width: 100vw;
+            max-height: 100vh;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .overlay .close-btn {
+            position: fixed !important;
+            top: 16px !important;
+            right: 16px !important;
+            background: rgba(0,0,0,0.85);
+            color: #e2e8f0;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            z-index: 2147483648 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <h1>Player de Vídeo Global</h1>
+        <p class="subtitle">Carregue um vídeo local e peça para todos iniciarem o play.</p>
+
+        <div class="panel">
+            <label for="file">Arquivo de vídeo (local)</label>
+            <input id="file" type="file" accept="video/*">
+            <div class="actions">
+                <button id="btnPlay" disabled>Play em Tela Cheia</button>
+                <button id="btnStop" class="secondary" disabled>Parar</button>
+            </div>
+            <div id="status" class="status">Selecione um arquivo de vídeo.</div>
+            <div class="note">
+                • O arquivo local só fica disponível no seu navegador. Para que outros jogadores vejam, cada um precisa carregar o mesmo arquivo ou você deve fornecer um link público do vídeo.<br>
+                • O botão de play tenta entrar em tela cheia para cobrir o OWLbear. Alguns navegadores exigem gesto do usuário.
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" aria-hidden="true">
+        <button class="close-btn" id="closeOverlay">Fechar</button>
+        <video id="video" controls playsinline></video>
+    </div>
+
+    <script>
+        // ...script movido para sync.js...
+    </script>
+    <script src="sync.js"></script>
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Player Modal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: #000;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+    
+    button {
+      background: linear-gradient(135deg, #38bdf8, #22d3ee);
+      color: #0b1221;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.4);
+      transition: transform 0.2s ease;
+    }
+    
+    button:hover {
+      transform: scale(1.05);
+    }
+    
+    #status {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 1000;
+      display: none;
+    }
+
+    .gm-controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none; /* Visible only for GM */
+      gap: 15px;
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+      z-index: 1001;
+    }
+
+    .gm-controls button {
+      background: linear-gradient(135deg, #f472b6, #e879f9); /* Pink for GM */
+      min-width: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div id="playOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:2000;cursor:pointer;">
+    <button style="font-size:24px;padding:20px 40px;">▶️ Clique para Iniciar</button>
+  </div>
+  <video id="video" muted playsinline autoplay preload="auto"></video>
+  
+  <div class="controls">
+    <button id="soundBtn">🔊 Som</button>
+  </div>
+
+  <!-- Painel exclusivo do Mestre -->
+  <div id="gmControls" class="gm-controls">
+    <button id="btnPauseResume">⏸️ Pausar Todos</button>
+    <button id="btnSync">🔄 Sincronizar</button>
+    <button id="btnCloseAll" style="background: linear-gradient(135deg, #ef4444, #dc2626);">⏹️ Encerrar Todos</button>
+  </div>
+  
+  <div id="status">Carregando...</div>
+
+  <script type="module" src="/src/modal.js"></script>
+</body>
+</html>

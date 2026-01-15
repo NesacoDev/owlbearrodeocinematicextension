@@ -1,0 +1,13 @@
+{
+  "name": "Extensão de Teste Local",
+  "description": "Uma extensão de teste hospedada localmente com funcionalidades básicas",
+  "version": "1.0.0",
+  "manifest_version": 1,
+  "action": {
+    "title": "Extensão Local",
+    "icon": "/icon.svg",
+    "popover": "http://localhost:8765/index.html",
+    "height": 1080,
+    "width": 1920
+  }
+}

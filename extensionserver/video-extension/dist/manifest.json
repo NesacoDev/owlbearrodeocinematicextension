@@ -1,0 +1,13 @@
+{
+  "name": "Video Player Global",
+  "description": "Reproduza vídeos em tela grande para todos os jogadores",
+  "version": "1.0.0",
+  "manifest_version": 1,
+  "action": {
+    "title": "Video Player",
+    "icon": "/icon.svg",
+    "popover": "/",
+    "height": 700,
+    "width": 500
+  }
+}

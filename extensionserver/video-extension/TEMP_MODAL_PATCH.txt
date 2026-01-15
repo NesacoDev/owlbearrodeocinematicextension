@@ -1,0 +1,2 @@
+Modal deve enviar modal-ready ao carregar
+Main deve reenviar play quando receber modal-ready
